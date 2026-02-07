@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unblock PPS</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000000;
+            margin: 0;
+            color: #ffffff;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .login-container h2 {
+            margin-bottom: 25px;
+            color: #ffffff;
+            font-size: 2em;
+        }
+        .login-container input {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            font-size: 1em;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .login-container button:hover { background-color: #0056b3; }
+        #message { margin-top: 15px; font-size: 0.9em; color: #88bbff; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Sign In</h2>
+        <input type="text" id="email" placeholder="Email/Username">
+        <input type="password" id="password" placeholder="Password">
+        <button type="button" onclick="loginUser()">Log In</button>
+        
+        <p id="message"></p>
+    </div>
+<script>
+    // Initialize Supabase
+const _supabase = supabase.createClient('https://jawxmetkycxlczqudtbu.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imphd3htZXRreWN4bGN6cXVkdGJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyNTczNjksImV4cCI6MjA4NTgzMzM2OX0.LjjdeOjvOFrpbAKCez9YRk3SZKhWSGXlulQJf1HCOFQ');
+
+async function loginUser(e) {
+        // Prevent the page from refreshing (important for forms!)
+        if (e) e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Call the login function
+        const { data, error } = await _supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            alert("Login Error: " + error.message);
+            console.error(error);
+        } else {
+            console.log("Success! Session created.");
+            
+            // Wait 500ms to ensure the browser saves the auth token to local storage
+            setTimeout(() => {
+                window.location.href = 'main.html';
+            }, 500);
+        }
+    }
+</script>
+</body>
+</html>
